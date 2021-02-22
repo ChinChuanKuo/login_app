@@ -118,7 +118,6 @@ Widget _buildSendButn(onPressed) {
     width: double.infinity,
     child: RaisedButton(
       elevation: 5.0,
-      onPressed: onPressed,
       padding: const EdgeInsets.all(15.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
@@ -134,6 +133,7 @@ Widget _buildSendButn(onPressed) {
           fontFamily: 'OpenSans',
         ),
       ),
+      onPressed: onPressed,
     ),
   );
 }
@@ -204,6 +204,7 @@ class _ForgetScreenDesktopState extends State<ForgetScreenDesktop> {
         Center(
           child: Container(
             height: double.infinity,
+            constraints: BoxConstraints(maxWidth: 601),
             child: SingleChildScrollView(
               physics: AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.symmetric(

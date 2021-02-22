@@ -9,6 +9,9 @@ class CodeScreen extends StatefulWidget {
 }
 
 class _CodeScreenState extends State<CodeScreen> {
+  void _resendForm() => Navigator.push(
+      context, MaterialPageRoute(builder: (context) => CodeScreen()));
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,8 +20,8 @@ class _CodeScreenState extends State<CodeScreen> {
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Responsive(
-            mobile: CodeScreenMobile(),
-            desktop: CodeScreenDesktop(),
+            mobile: CodeScreenMobile(resendForm: _resendForm),
+            desktop: CodeScreenDesktop(resendForm: _resendForm),
           ),
         ),
       ),
@@ -108,13 +111,12 @@ Widget _buildCode() {
   );
 }
 
-Widget _buildSendButn() {
+Widget _buildSendButn(onPressed) {
   return Container(
     padding: const EdgeInsets.symmetric(vertical: 25.0),
     width: double.infinity,
     child: RaisedButton(
       elevation: 5.0,
-      onPressed: () => print('Code Button Pressed'),
       padding: const EdgeInsets.all(15.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
@@ -130,11 +132,19 @@ Widget _buildSendButn() {
           fontFamily: 'OpenSans',
         ),
       ),
+      onPressed: onPressed,
     ),
   );
 }
 
 class CodeScreenMobile extends StatefulWidget {
+  final Function resendForm;
+
+  const CodeScreenMobile({
+    Key key,
+    @required this.resendForm,
+  }) : super(key: key);
+
   @override
   _CodeScreenMobileState createState() => _CodeScreenMobileState();
 }
@@ -162,7 +172,7 @@ class _CodeScreenMobileState extends State<CodeScreenMobile> {
                 SizedBox(height: 30.0),
                 _buildCode(),
                 SizedBox(height: 30.0),
-                _buildSendButn(),
+                _buildSendButn(this.widget.resendForm),
               ],
             ),
           ),
@@ -173,6 +183,13 @@ class _CodeScreenMobileState extends State<CodeScreenMobile> {
 }
 
 class CodeScreenDesktop extends StatefulWidget {
+  final Function resendForm;
+
+  const CodeScreenDesktop({
+    Key key,
+    @required this.resendForm,
+  }) : super(key: key);
+
   @override
   _CodeScreenDesktopState createState() => _CodeScreenDesktopState();
 }
@@ -186,6 +203,7 @@ class _CodeScreenDesktopState extends State<CodeScreenDesktop> {
         Center(
           child: Container(
             height: double.infinity,
+            constraints: BoxConstraints(maxWidth: 601),
             child: SingleChildScrollView(
               physics: AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.symmetric(
@@ -201,7 +219,7 @@ class _CodeScreenDesktopState extends State<CodeScreenDesktop> {
                   SizedBox(height: 30.0),
                   _buildCode(),
                   SizedBox(height: 30.0),
-                  _buildSendButn(),
+                  _buildSendButn(this.widget.resendForm),
                 ],
               ),
             ),

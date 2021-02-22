@@ -12,10 +12,12 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool _rememberMe = false;
 
+  void _changedRemember(bool value) => setState(() => _rememberMe = value);
+
   void _forgetForm() => Navigator.push(
       context, MaterialPageRoute(builder: (context) => ForgetScreen()));
 
-  void _changedRemember(bool value) => setState(() => _rememberMe = value);
+  void _loginForm() => print("123");
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +29,15 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Responsive(
             mobile: LoginScreenMobile(
               rememberMe: _rememberMe,
-              forgetForm: _forgetForm,
               changedRemember: _changedRemember,
+              forgetForm: _forgetForm,
+              loginForm: _loginForm,
             ),
             desktop: LoginScreenDesktop(
               rememberMe: _rememberMe,
-              forgetForm: _forgetForm,
               changedRemember: _changedRemember,
+              forgetForm: _forgetForm,
+              loginForm: _loginForm,
             ),
           ),
         ),
@@ -161,13 +165,12 @@ Widget _buildRememberMeCheckbox(rememberMe, onChanged) {
   );
 }
 
-Widget _buildLoginButn() {
+Widget _buildLoginButn(onPressed) {
   return Container(
     padding: const EdgeInsets.symmetric(vertical: 25.0),
     width: double.infinity,
     child: RaisedButton(
       elevation: 5.0,
-      onPressed: () => print('Login Button Pressed'),
       padding: const EdgeInsets.all(15.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
@@ -183,6 +186,7 @@ Widget _buildLoginButn() {
           fontFamily: 'OpenSans',
         ),
       ),
+      onPressed: onPressed,
     ),
   );
 }
@@ -272,12 +276,14 @@ class LoginScreenMobile extends StatefulWidget {
   final bool rememberMe;
   final Function(bool) changedRemember;
   final Function forgetForm;
+  final Function loginForm;
 
   const LoginScreenMobile({
     Key key,
     @required this.rememberMe,
-    @required this.forgetForm,
     @required this.changedRemember,
+    @required this.forgetForm,
+    @required this.loginForm,
   }) : super(key: key);
 
   @override
@@ -309,7 +315,7 @@ class _LoginScreenMobileState extends State<LoginScreenMobile> {
                 _buildForgetPasswordButn(this.widget.forgetForm),
                 _buildRememberMeCheckbox(
                     this.widget.rememberMe, this.widget.changedRemember),
-                _buildLoginButn(),
+                _buildLoginButn(this.widget.loginForm),
                 _buildSignInWithText(),
                 _buildSocialButnRow(),
                 _buildSignUpButn(),
@@ -326,12 +332,14 @@ class LoginScreenDesktop extends StatefulWidget {
   final bool rememberMe;
   final Function(bool) changedRemember;
   final Function forgetForm;
+  final Function loginForm;
 
   const LoginScreenDesktop({
     Key key,
     @required this.rememberMe,
     @required this.changedRemember,
     @required this.forgetForm,
+    @required this.loginForm,
   }) : super(key: key);
 
   @override
@@ -381,7 +389,7 @@ class _LoginScreenDesktopState extends State<LoginScreenDesktop> {
                   _buildForgetPasswordButn(this.widget.forgetForm),
                   _buildRememberMeCheckbox(
                       this.widget.rememberMe, this.widget.changedRemember),
-                  _buildLoginButn(),
+                  _buildLoginButn(this.widget.loginForm),
                   _buildSignInWithText(),
                   _buildSocialButnRow(),
                   _buildSignUpButn(),
